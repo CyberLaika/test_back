@@ -16,8 +16,17 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
 
+const players = {
+
+}
+
 io.on('connection', (socket) => {
-  console.log('haha')
+  console.log('connected')
+  players[socket.id] = {
+    x: 100,
+    y: 100
+  }
+  console.log(players)
 })
 
 server.listen(port, () => {
