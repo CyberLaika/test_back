@@ -16,17 +16,17 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
 
-const players = {
-
-}
+const players = {}
 
 io.on('connection', (socket) => {
   console.log('connected')
   players[socket.id] = {
-    x: 100,
-    y: 100
+    x: 500 * Math.random(),
+    y: 500 * Math.random()
   }
   console.log(players)
+
+  io.emit('updatePlayers', players)
 })
 
 server.listen(port, () => {
