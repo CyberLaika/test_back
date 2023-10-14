@@ -16,17 +16,25 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
 
-const players = {}
+const sessions = {}
 
 io.on('connection', (socket) => {
   console.log('connected')
-  players[socket.id] = {
-    x: 500 * Math.random(),
-    y: 500 * Math.random()
-  }
-  console.log(players)
+  const player = new Player(500 * Math.random(), 500 * Math.random())
+  const bot = new Player(500 * Math.random(), 500 * Math.random())
+  sessions[socket.id] = new Session(player, bot, socket.id)
 
-  io.emit('updatePlayers', players)
+
+
+  const sessionInfo = {
+    playerX: player.x,
+    playerY: player.y,
+    botX: bot.x,
+    botY: bot.y,
+  }
+  console.log(sessionInfo)
+
+  io.emit('sessionInfo', sessionInfo)
 })
 
 server.listen(port, () => {
