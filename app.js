@@ -1,6 +1,38 @@
+
 const express = require('express')
 const app = express()
 const port = 3000
+
+
+class Player {
+  constructor(x, y, radius, color) {
+    this.x = x
+    this.y = y
+    this.radius = radius
+    this.color = color
+  }
+
+  draw() {
+    c.beginPath()
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+    c.fillStyle = this.color
+    c.fill()
+  }
+}
+
+
+
+class Session {
+
+  constructor(player, bot, session) {
+    this.player = player
+    this.bot = bot
+    this.session = session
+  }
+}
+
+
+
 
 
 // creating socket.io server
