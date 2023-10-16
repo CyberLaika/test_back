@@ -64,15 +64,13 @@ io.on('connection', (socket) => {
     botX: bot.x,
     botY: bot.y,
   }
-  console.log(sessionInfo)
-
-  io.sockets.socket(socket.id).emit('sessionInfo', sessionInfo)
+  io.to(socket.id).emit('sessionInfo', sessionInfo);
 
   socket.on('disconnect', (reason) => {
     console.log(`Client gone [id=${socket.id}]`)
     delete sessions[socket.id]
   })
-  
+
 })
 
 server.listen(port, () => {
