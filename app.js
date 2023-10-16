@@ -66,7 +66,13 @@ io.on('connection', (socket) => {
   }
   console.log(sessionInfo)
 
-  io.emit('sessionInfo', sessionInfo)
+  io.sockets.socket(socket.id).emit('sessionInfo', sessionInfo)
+
+  socket.on('disconnect', (reason) => {
+    console.log(`Client gone [id=${socket.id}]`)
+    delete sessions[socket.id]
+  })
+  
 })
 
 server.listen(port, () => {
