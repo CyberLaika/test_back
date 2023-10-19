@@ -64,21 +64,19 @@ io.on('connection', (socket) => {
     console.log(`Client gone [id=${socket.id}]`)
     delete sessions[socket.id]
   })
+
+  socket.on('updatePlayer', ({ x, y }) => {
+    console.log(`update is here`)
+    let currentPlayer = sessions[socket.id]
+    console.log(`it is update from user ${currentPlayer}`)
+    console.log(`update is ${x}`)
+  })
 })
 
 io.on('ping', (id) => {
   io.to(id).emit('pong', 'pong')
    console.log(`pong sended`)
 })
-
-
-io.on('updatePlayer', ({ x, y, sessionId }) => {
-  console.log(`update is here`)
-  let currentPlayer = sessions[sessionId]
-  console.log(`it is update from user ${currentPlayer}`)
-  console.log(`update is ${x}`)
-})
-
 
 // setInterval(() => {
 //   io.emit('updatePlayers', backEndPlayers)
