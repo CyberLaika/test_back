@@ -78,7 +78,7 @@ setInterval(() => {
       let deltaY =  sessions[id].player.y - sessions[id].bot.y
       sessions[id].bot.x += Math.min(5, deltaX)
       sessions[id].bot.y += Math.min(5, deltaY)
-      io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y});
+      io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
   }
 
   io.emit('updatePlayers', backEndPlayers)
