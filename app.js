@@ -21,7 +21,6 @@ class Player {
 }
 
 
-
 class Session {
 
   constructor(player, bot, session) {
@@ -30,9 +29,6 @@ class Session {
     this.session = session
   }
 }
-
-
-
 
 
 // creating socket.io server
@@ -56,8 +52,6 @@ io.on('connection', (socket) => {
   const bot = new Player(500 * Math.random(), 500 * Math.random())
   sessions[socket.id] = new Session(player, bot, socket.id)
 
-
-
   const sessionInfo = {
     playerX: player.x,
     playerY: player.y,
@@ -70,8 +64,20 @@ io.on('connection', (socket) => {
     console.log(`Client gone [id=${socket.id}]`)
     delete sessions[socket.id]
   })
-
 })
+
+
+io.on('updatePlayer', (updatePlayerState) => {
+  val currentPlayer = sessions[updatePlayerState['session']]
+  console.log(`it is update from user ${currentPlayer}`)
+  console.log(`update is ${updatePlayerState}`)
+})
+
+
+// setInterval(() => {
+//   io.emit('updatePlayers', backEndPlayers)
+// }, 15)
+
 
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

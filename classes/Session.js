@@ -5,5 +5,4 @@ class Session {
     this.bot = bot
     this.session = session
   }
-
 }
