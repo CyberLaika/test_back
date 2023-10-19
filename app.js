@@ -76,8 +76,16 @@ setInterval(() => {
   for (const id in sessions){
       let deltaX =  sessions[id].player.x - sessions[id].bot.x
       let deltaY =  sessions[id].player.y - sessions[id].bot.y
-      sessions[id].bot.x += Math.min(1, deltaX)
-      sessions[id].bot.y += Math.min(1, deltaY)
+      if (deltaX > 0) {
+        sessions[id].bot.x += Math.min(1, deltaX)
+      } else {
+         sessions[id].bot.x += Math.max(-1, deltaX)
+      }
+      if (deltaY > 0) {
+        sessions[id].bot.y += Math.min(1, deltaY)
+      } else {
+         sessions[id].bot.y += Math.max(-1, deltaY)
+      }
       io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
   }
 }, 15)
