@@ -68,7 +68,8 @@ io.on('connection', (socket) => {
 
 
 io.on('updatePlayer', (updatePlayerState) => {
-  const currentPlayer = sessions[updatePlayerState['session']]
+   console.log(`update is here`)
+  const currentPlayer = sessions[updatePlayerState['sessionId']]
   console.log(`it is update from user ${currentPlayer}`)
   console.log(`update is ${updatePlayerState}`)
 })
