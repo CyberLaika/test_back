@@ -66,21 +66,23 @@ io.on('connection', (socket) => {
   })
 
   socket.on('updatePlayer', ({ x, y }) => {
-    console.log(`update is here`)
     let currentPlayer = sessions[socket.id]
-    console.log(`it is update from user ${currentPlayer}`)
-    console.log(`update is ${x}`)
+    sessions[socket.id].player.x = x
+    sessions[socket.id].player.y = y
   })
 })
 
-io.on('ping', (id) => {
-  io.to(id).emit('pong', 'pong')
-   console.log(`pong sended`)
-})
+setInterval(() => {
+  for (const id in sessions){
+      let deltaX =  sessions[id].player.x - sessions[id].bot.x
+      let deltaY =  sessions[id].player.y - sessions[id].bot.y
+      sessions[id].bot.x += Math.min(5, deltaX)
+      sessions[id].bot.y += Math.min(5, deltaY)
+      io.to(id).emit('updateBot', ({sessions[id].bot.x, sessions[id].bot.y});
+  }
 
-// setInterval(() => {
-//   io.emit('updatePlayers', backEndPlayers)
-// }, 15)
+  io.emit('updatePlayers', backEndPlayers)
+}, 15)
 
 
 server.listen(port, () => {
