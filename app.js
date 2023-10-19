@@ -66,6 +66,11 @@ io.on('connection', (socket) => {
   })
 })
 
+io.on('ping', (id) => {
+  io.to(id).emit('pong', 'pong')
+   console.log(`pong sended`)
+})
+
 
 io.on('updatePlayer', ({ x, y, sessionId }) => {
   console.log(`update is here`)
