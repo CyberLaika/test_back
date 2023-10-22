@@ -67,7 +67,7 @@ setInterval(() => {
   for (const id in sessions){
       let deltaX =  sessions[id].player.x - sessions[id].bot.x
       let deltaY =  sessions[id].player.y - sessions[id].bot.y
-      if ((deltaX * deltaX + deltaY *deltaY) < 25){
+      if ((deltaX * deltaX + deltaY *deltaY) < 49){
         io.to(id).emit('gameOver')
         continue
       }
