@@ -18,6 +18,7 @@ class Session {
     this.player = player
     this.bot = bot
     this.session = session
+    this.gameIsOver = false
   }
 }
 
@@ -65,10 +66,14 @@ io.on('connection', (socket) => {
 
 setInterval(() => {
   for (const id in sessions){
+      if (sessions[id].gameIsOver){
+        continue
+      }
       let deltaX =  sessions[id].player.x - sessions[id].bot.x
       let deltaY =  sessions[id].player.y - sessions[id].bot.y
       if ((deltaX * deltaX + deltaY *deltaY) < 49){
         io.to(id).emit('gameOver')
+        sessions[id].gameIsOver = true
         continue
       }
       if (deltaX > 0) {
