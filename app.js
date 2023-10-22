@@ -8,15 +8,6 @@ class Player {
   constructor(x, y, radius, color) {
     this.x = x
     this.y = y
-    this.radius = radius
-    this.color = color
-  }
-
-  draw() {
-    c.beginPath()
-    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    c.fillStyle = this.color
-    c.fill()
   }
 }
 
@@ -76,6 +67,10 @@ setInterval(() => {
   for (const id in sessions){
       let deltaX =  sessions[id].player.x - sessions[id].bot.x
       let deltaY =  sessions[id].player.y - sessions[id].bot.y
+      if ((deltaX * deltaX + deltaY *deltaY) < 25){
+        io.to(id).emit('gameOver')
+        continue
+      }
       if (deltaX > 0) {
         sessions[id].bot.x += Math.min(1, deltaX)
       } else {
@@ -86,7 +81,9 @@ setInterval(() => {
       } else {
          sessions[id].bot.y += Math.max(-1, deltaY)
       }
+
       io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
+
   }
 }, 15)
 
