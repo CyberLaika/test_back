@@ -1,7 +1,22 @@
+import * as tf from '@tensorflow/tfjs';
+
 
 const express = require('express')
 const app = express()
 const port = 3000
+
+async function loadModel() {
+  return tf.loadLayersModel('tfjsmodelv0')
+}
+
+async function predict(model, pointsData) {
+  // pointsData -> List[float] как тебе такая типизация //заебись
+  return model.predict(tf.tensor2d(pointsData, [1, 1])).dataSync();
+}
+
+let model = loadModel()
+let predicted = predict(model, [1.0, 1.0])
+
 
 
 class Player {
