@@ -5,7 +5,7 @@ const app = express()
 const port = 3000
 
 async function loadModel() {
-  return await tf.loadLayersModel('tfjsmodelv0')
+  return await tf.loadLayersModel('file:///home/cyberserver/forge/multiplayer-game-starter-main/tfjsmodelv0/model.json')
 }
 
 async function predict(model, pointsData) {
