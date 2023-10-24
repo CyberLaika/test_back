@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 
 async function loadModel() {
-  return tf.loadLayersModel('tfjsmodelv0')
+  return await tf.loadLayersModel('tfjsmodelv0')
 }
 
 async function predict(model, pointsData) {
