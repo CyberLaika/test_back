@@ -1,6 +1,4 @@
-import * as tf from '@tensorflow/tfjs';
-
-
+const tf = require('@tensorflow/tfjs');
 const express = require('express')
 const app = express()
 const port = 3000
