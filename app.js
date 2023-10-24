@@ -13,7 +13,7 @@ async function predict(model, pointsData) {
 }
 
 let model = loadModel()
-let predicted = predict(model, [1.0, 1.0])
+let predicted = predict(model, [1.0])
 
 
 
