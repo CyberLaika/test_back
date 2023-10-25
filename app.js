@@ -55,7 +55,7 @@ const sessions = {}
 
 io.on('connection', (socket) => {
   console.log('connected')
-  console.log(predict(model, [0.9,0.9, 0.1,0.1]))
+  console.log(await predict(model, [0.9,0.9, 0.1,0.1]))
   const player = new Player(500 * Math.random(), 500 * Math.random())
   const bot = new Player(500 * Math.random(), 500 * Math.random())
   sessions[socket.id] = new Session(player, bot, socket.id)
