@@ -119,8 +119,8 @@ async function waitUntil(condition) {
   return await new Promise(resolve => {
     const interval = setInterval(() => {
       if (condition) {
-        prinln("насру")
-        prinln(hui)
+        console.log("насру")
+        console.log(hui)
         clearInterval(interval)
       };
     }, 15);
