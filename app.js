@@ -83,14 +83,14 @@ io.on('connection', async (socket) => {
 
 function predictMove(id){
  if (sessions[id].gameIsOver){
-      continue
+      return
     }
     let deltaX =  sessions[id].player.x - sessions[id].bot.x
     let deltaY =  sessions[id].player.y - sessions[id].bot.y
     if ((deltaX * deltaX + deltaY *deltaY) < 49){
       io.to(id).emit('gameOver')
       sessions[id].gameIsOver = true
-      continue
+      return
     }
     if (deltaX > 0) {
       sessions[id].bot.x += Math.min(1, deltaX)
