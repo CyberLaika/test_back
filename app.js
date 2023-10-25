@@ -131,7 +131,7 @@ function predictMove(id){
     io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
 }
 
-function predictMoveNeuro(deltaX, deltaY){
+function predictMoveNeuro(id, deltaX, deltaY){
  if (sessions[id].gameIsOver){
       return
     }
@@ -149,7 +149,7 @@ function predictMoveNeuro(deltaX, deltaY){
 setInterval(() => {
   for (const id in sessions){
     let res = makePredictSync(sessions[id].player.x/500, sessions[id].player.y/500, sessions[id].bot.x/500, sessions[id].bot.y/500)
-    predictMoveNeuro(res[0], res[1])
+    predictMoveNeuro(id, res[0], res[1])
     console.log(res)
   }
 }, 15)
