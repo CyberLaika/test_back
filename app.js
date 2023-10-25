@@ -123,11 +123,13 @@ function predictMove(id){
     io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
 }
 
-// setInterval(() => {
-//   for (const id in sessions){
-//      predictMove(id)
-//   }
-// }, 15)
+setInterval(() => {
+  for (const id in sessions){
+    predictMove(id)
+    let res = makePredict2(sessions[id].player.x/2000, sessions[id].player.y/2000, sessions[id].bot.x/2000, sessions[id].bot.y/2000)
+    console.log(res)
+  }
+}, 15)
 
 
 // async function waitUntil(condition) {
@@ -142,17 +144,17 @@ function predictMove(id){
 //   });
 // }
 
-let run = async ()=>{
-  while(true){
-    for (const id in sessions){
-         predictMove(id)
-         let res = await makePredict(sessions[id].player.x/2000, sessions[id].player.y/2000, sessions[id].bot.x/2000, sessions[id].bot.y/2000)
-         console.log("насру внутри run")
-         console.log(res)
-      }
-    await delay(15);
-  }
-}
+// let run = async ()=>{
+//   while(true){
+//     for (const id in sessions){
+//          predictMove(id)
+//          let res = await makePredict(sessions[id].player.x/2000, sessions[id].player.y/2000, sessions[id].bot.x/2000, sessions[id].bot.y/2000)
+//          console.log("насру внутри run")
+//          console.log(res)
+//       }
+//     await delay(15);
+//   }
+// }
 
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
