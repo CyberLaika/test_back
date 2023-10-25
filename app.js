@@ -14,8 +14,8 @@ async function predict(model, pointsData) {
 }
 let model = loadModel()
 
-async function makePredict() {
-  return await predict(model, [0.9,0.9, 0.1,0.1])
+async function makePredict(playerX, playerY, botX, botY) {
+  return await predict(model, [playerX,playerY, botX,botY])
 }
 
 class Player {
@@ -121,8 +121,11 @@ async function waitUntil(condition) {
 
   return await new Promise(resolve => {
     const interval = setInterval(() => {
-        console.log("насру")
-        console.log(hui)
+      for (const id in sessions){
+         predictMove(id)
+         let res = await makePredict(sessions[id].player.x, sessions[id].player.y, sessions[id].bot.x, sessions[id].bot.y)
+         console.log(res)
+      }
       if (!condition) {  
         clearInterval(interval)
       };
