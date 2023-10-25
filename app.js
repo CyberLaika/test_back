@@ -10,6 +10,11 @@ async function loadModel() {
 
 let model = loadModel()
 
+let modelSync
+let run = async ()=>{
+  modelSync = await loadModel()
+}
+
 async function predict(model, pointsData) {
   // pointsData -> List[float] как тебе такая типизация //заебись
   return (await model).predict(tf.tensor2d(pointsData, [1, 4])).dataSync();
@@ -17,7 +22,7 @@ async function predict(model, pointsData) {
 
 function predict2(model, pointsData) {
   // pointsData -> List[float] как тебе такая типизация //заебись
-  return model.predict(tf.tensor2d(pointsData, [1, 4])).dataSync();
+  return modelSync.predict(tf.tensor2d(pointsData, [1, 4])).dataSync();
 }
 
 
