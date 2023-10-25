@@ -109,32 +109,35 @@ function predictMove(id){
     io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
 }
 
-setInterval(() => {
-  for (const id in sessions){
-     predictMove(id)
-  }
-}, 15)
+// setInterval(() => {
+//   for (const id in sessions){
+//      predictMove(id)
+//   }
+// }, 15)
 
 
-async function waitUntil(condition) {
-  const hui = await makePredict()
+// async function waitUntil(condition) {
+//   const hui = await makePredict()
 
-  return await new Promise(resolve => {
-    const interval = setInterval(() => {
-      for (const id in sessions){
+//   return await new Promise(resolve => {
+//     const interval = setInterval(() => {
+//       if (!condition) {  
+//         clearInterval(interval)
+//       };
+//     }, 15);
+//   });
+// }
+
+let run = async ()=>{
+  while(true){
+    for (const id in sessions){
          predictMove(id)
          let res = await makePredict(sessions[id].player.x, sessions[id].player.y, sessions[id].bot.x, sessions[id].bot.y)
          console.log(res)
       }
-      if (!condition) {  
-        clearInterval(interval)
-      };
-    }, 15);
-  });
+    await delay(15);
+  }
 }
-
-const bar = waitUntil(PredictWork)
-
 
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
