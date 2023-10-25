@@ -149,7 +149,7 @@ function predictMoveNeuro(id, deltaX, deltaY){
 
 setInterval(() => {
   for (const id in sessions){
-    let res = makePredictSync(sessions[id].player.x/100, sessions[id].player.y/100, sessions[id].bot.x/100, sessions[id].bot.y/100)
+    let res = makePredictSync(sessions[id].player.x/1, sessions[id].player.y/1, sessions[id].bot.x/1, sessions[id].bot.y/1)
     predictMoveNeuro(id, res[0], res[1])
     console.log(res)
   }
