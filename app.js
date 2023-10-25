@@ -56,7 +56,7 @@ const sessions = {}
 
 
 io.on('connection', async (socket) => {
-  let result = await makePredict()
+  let result = await makePredict(0.1,0.1,0.2,0.2)
   console.log('connected')
   console.log(result)
   const player = new Player(500 * Math.random(), 500 * Math.random())
@@ -133,6 +133,7 @@ let run = async ()=>{
     for (const id in sessions){
          predictMove(id)
          let res = await makePredict(sessions[id].player.x/2000, sessions[id].player.y/2000, sessions[id].bot.x/2000, sessions[id].bot.y/2000)
+         console.log("насру внутри run")
          console.log(res)
       }
     await delay(15);
