@@ -15,14 +15,14 @@ function loadModelSync() {
 
 let model = loadModel()
 
-let modelSync = loadModelSync()
+let modelSync
 
 async function predict(model, pointsData) {
   // pointsData -> List[float] как тебе такая типизация //заебись
   return (await model).predict(tf.tensor2d(pointsData, [1, 4])).dataSync();
 }
 
-function predict2(model, pointsData) {
+function predictSync(model, pointsData) {
   // pointsData -> List[float] как тебе такая типизация //заебись
   return modelSync.predict(tf.tensor2d(pointsData, [1, 4])).dataSync();
 }
@@ -33,7 +33,7 @@ async function makePredict(playerX, playerY, botX, botY) {
 }
 
 function makePredictSync(playerX, playerY, botX, botY) {
-  return predict2(modelSync, [playerX,playerY, botX,botY])
+  return predictSync(modelSync, [playerX,playerY, botX,botY])
 }
 
 class Player {
@@ -77,7 +77,7 @@ io.on('connection', async (socket) => {
   let result = await makePredict(0.1,0.1,0.2,0.2)
   console.log('connected')
   console.log(result)
-  // modelSync = await loadModel()
+  modelSync = await loadModel()
   let result2 = await makePredictSync(0.1,0.1,0.2,0.2)
   console.log('predict2')
   console.log(result2)
