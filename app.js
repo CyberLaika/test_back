@@ -135,7 +135,8 @@ function predictMoveNeuro(id, deltaX, deltaY){
  if (sessions[id].gameIsOver){
       return
     }
-    if ((deltaX * deltaX + deltaY *deltaY) < 49){
+    // if ((deltaX * deltaX + deltaY *deltaY) < 49){
+    if (false){
       io.to(id).emit('gameOver')
       sessions[id].gameIsOver = true
       return
