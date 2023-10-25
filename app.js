@@ -26,7 +26,7 @@ async function makePredict(playerX, playerY, botX, botY) {
 }
 
 function makePredict2(playerX, playerY, botX, botY) {
-  return predict(model, [playerX,playerY, botX,botY])
+  return predict2(model, [playerX,playerY, botX,botY])
 }
 
 class Player {
@@ -102,8 +102,8 @@ function predictMove(id){
  if (sessions[id].gameIsOver){
       return
     }
-    let deltaX =  sessions[id].player.x - sessions[id].bot.x
-    let deltaY =  sessions[id].player.y - sessions[id].bot.y
+    let deltaX = sessions[id].player.x - sessions[id].bot.x
+    let deltaY = sessions[id].player.y - sessions[id].bot.y
     if ((deltaX * deltaX + deltaY *deltaY) < 49){
       io.to(id).emit('gameOver')
       sessions[id].gameIsOver = true
