@@ -12,12 +12,8 @@ async function predict(model, pointsData) {
   // pointsData -> List[float] как тебе такая типизация //заебись
   return (await model).predict(tf.tensor2d(pointsData, [1, 4])).dataSync()[0];
 }
-
 let model = loadModel()
-let predicted = predict(model, [0.9,0.9, 0.1,0.1])
 
-// Get the value
-const value = predicted.dataSync()[0]
 
 
 
@@ -55,8 +51,12 @@ app.get('/', (req, res) => {
 
 const sessions = {}
 
+async function makePredict() {
+  return await predict(model, [0.9,0.9, 0.1,0.1])
+}
+
 io.on('connection', async (socket) => {
-  let result = await predicted
+  let result = await makePredict()
   console.log('connected')
   console.log(result)
   const player = new Player(500 * Math.random(), 500 * Math.random())
