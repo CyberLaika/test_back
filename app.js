@@ -78,7 +78,7 @@ io.on('connection', async (socket) => {
   console.log('connected')
   console.log(result)
   // modelSync = await loadModel()
-  let result2 = await makePredict2(0.1,0.1,0.2,0.2)
+  let result2 = await makePredictSync(0.1,0.1,0.2,0.2)
   console.log('predict2')
   console.log(result2)
   const player = new Player(500 * Math.random(), 500 * Math.random())
