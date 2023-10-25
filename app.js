@@ -131,10 +131,25 @@ function predictMove(id){
     io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
 }
 
+function predictMoveNeuro(deltaX, deltaY){
+ if (sessions[id].gameIsOver){
+      return
+    }
+    if ((deltaX * deltaX + deltaY *deltaY) < 49){
+      io.to(id).emit('gameOver')
+      sessions[id].gameIsOver = true
+      return
+    }
+    sessions[id].bot.x += deltaX
+    sessions[id].bot.y += deltaY
+    io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
+}
+
+
 setInterval(() => {
   for (const id in sessions){
-    predictMove(id)
-    let res = makePredictSync(sessions[id].player.x/2000, sessions[id].player.y/2000, sessions[id].bot.x/2000, sessions[id].bot.y/2000)
+    let res = makePredictSync(sessions[id].player.x/500, sessions[id].player.y/500, sessions[id].bot.x/500, sessions[id].bot.y/500)
+    predictMoveNeuro(res[0], res[1])
     console.log(res)
   }
 }, 15)
