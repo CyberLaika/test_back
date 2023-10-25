@@ -134,7 +134,7 @@ function predictMove(id){
 setInterval(() => {
   for (const id in sessions){
     predictMove(id)
-    let res = makePredict2(sessions[id].player.x/2000, sessions[id].player.y/2000, sessions[id].bot.x/2000, sessions[id].bot.y/2000)
+    let res = makePredictSync(sessions[id].player.x/2000, sessions[id].player.y/2000, sessions[id].bot.x/2000, sessions[id].bot.y/2000)
     console.log(res)
   }
 }, 15)
