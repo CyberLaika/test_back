@@ -8,12 +8,14 @@ async function loadModel() {
   return await tf.loadLayersModel('file:///home/cyberserver/forge/multiplayer-game-starter-main/tfjsmodelv0/model.json')
 }
 
+
+function loadModelSync() {
+  return tf.loadLayersModel('file:///home/cyberserver/forge/multiplayer-game-starter-main/tfjsmodelv0/model.json')
+}
+
 let model = loadModel()
 
-let modelSync
-let run = async ()=>{
-  modelSync = await loadModel()
-}
+let modelSync = loadModelSync()
 
 async function predict(model, pointsData) {
   // pointsData -> List[float] как тебе такая типизация //заебись
@@ -30,8 +32,8 @@ async function makePredict(playerX, playerY, botX, botY) {
   return await predict(model, [playerX,playerY, botX,botY])
 }
 
-function makePredict2(playerX, playerY, botX, botY) {
-  return predict2(model, [playerX,playerY, botX,botY])
+function makePredictSync(playerX, playerY, botX, botY) {
+  return predict2(modelSync, [playerX,playerY, botX,botY])
 }
 
 class Player {
@@ -75,6 +77,7 @@ io.on('connection', async (socket) => {
   let result = await makePredict(0.1,0.1,0.2,0.2)
   console.log('connected')
   console.log(result)
+  // modelSync = await loadModel()
   let result2 = await makePredict2(0.1,0.1,0.2,0.2)
   console.log('predict2')
   console.log(result2)
