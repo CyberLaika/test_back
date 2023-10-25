@@ -25,6 +25,8 @@ class Player {
   }
 }
 
+let PredictWork = true
+
 
 class Session {
 
@@ -70,6 +72,7 @@ io.on('connection', async (socket) => {
   io.to(socket.id).emit('sessionInfo', sessionInfo);
 
   socket.on('disconnect', (reason) => {
+    PredictWork = false
     console.log(`Client gone [id=${socket.id}]`)
     delete sessions[socket.id]
   })
@@ -127,7 +130,7 @@ async function waitUntil(condition) {
   });
 }
 
-const bar = waitUntil(true)
+const bar = waitUntil(PredictWork)
 
 
 server.listen(port, () => {
