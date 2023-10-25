@@ -132,12 +132,14 @@ let run = async ()=>{
   while(true){
     for (const id in sessions){
          predictMove(id)
-         let res = await makePredict(sessions[id].player.x, sessions[id].player.y, sessions[id].bot.x, sessions[id].bot.y)
+         let res = await makePredict(sessions[id].player.x/2000, sessions[id].player.y/2000, sessions[id].bot.x/2000, sessions[id].bot.y/2000)
          console.log(res)
       }
     await delay(15);
   }
 }
+
+await run
 
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
