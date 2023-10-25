@@ -114,12 +114,14 @@ setInterval(() => {
 
 
 async function waitUntil(condition) {
+  const hui = await makePredict()
+
   return await new Promise(resolve => {
     const interval = setInterval(() => {
       if (condition) {
         prinln("насру")
-        prinln(await makePredict())
-        clearInterval(interval);
+        prinln(hui)
+        clearInterval(interval)
       };
     }, 15);
   });
