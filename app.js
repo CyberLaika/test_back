@@ -141,8 +141,8 @@ function predictMoveNeuro(id, deltaX, deltaY){
       sessions[id].gameIsOver = true
       return
     }
-    sessions[id].bot.x += deltaX*Math.random()*3
-    sessions[id].bot.y += deltaY*Math.random()*3
+    sessions[id].bot.x += deltaX*Math.random()*60
+    sessions[id].bot.y += deltaY*Math.random()*60
     io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
 }
 
