@@ -14,8 +14,9 @@ async function predict(model, pointsData) {
 }
 let model = loadModel()
 
-
-
+async function makePredict() {
+  return await predict(model, [0.9,0.9, 0.1,0.1])
+}
 
 class Player {
   constructor(x, y, radius, color) {
@@ -51,9 +52,6 @@ app.get('/', (req, res) => {
 
 const sessions = {}
 
-async function makePredict() {
-  return await predict(model, [0.9,0.9, 0.1,0.1])
-}
 
 io.on('connection', async (socket) => {
   let result = await makePredict()
@@ -83,33 +81,51 @@ io.on('connection', async (socket) => {
   })
 })
 
+function predictMove(id){
+ if (sessions[id].gameIsOver){
+      continue
+    }
+    let deltaX =  sessions[id].player.x - sessions[id].bot.x
+    let deltaY =  sessions[id].player.y - sessions[id].bot.y
+    if ((deltaX * deltaX + deltaY *deltaY) < 49){
+      io.to(id).emit('gameOver')
+      sessions[id].gameIsOver = true
+      continue
+    }
+    if (deltaX > 0) {
+      sessions[id].bot.x += Math.min(1, deltaX)
+    } else {
+       sessions[id].bot.x += Math.max(-1, deltaX)
+    }
+    if (deltaY > 0) {
+      sessions[id].bot.y += Math.min(1, deltaY)
+    } else {
+       sessions[id].bot.y += Math.max(-1, deltaY)
+    }
+
+    io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
+}
+
 setInterval(() => {
   for (const id in sessions){
-      if (sessions[id].gameIsOver){
-        continue
-      }
-      let deltaX =  sessions[id].player.x - sessions[id].bot.x
-      let deltaY =  sessions[id].player.y - sessions[id].bot.y
-      if ((deltaX * deltaX + deltaY *deltaY) < 49){
-        io.to(id).emit('gameOver')
-        sessions[id].gameIsOver = true
-        continue
-      }
-      if (deltaX > 0) {
-        sessions[id].bot.x += Math.min(1, deltaX)
-      } else {
-         sessions[id].bot.x += Math.max(-1, deltaX)
-      }
-      if (deltaY > 0) {
-        sessions[id].bot.y += Math.min(1, deltaY)
-      } else {
-         sessions[id].bot.y += Math.max(-1, deltaY)
-      }
-
-      io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
-
+     predictMove(id)
   }
 }, 15)
+
+
+async function waitUntil(condition) {
+  return await new Promise(resolve => {
+    const interval = setInterval(() => {
+      if (condition) {
+        prinln("насру")
+        prinln(await makePredict())
+        clearInterval(interval);
+      };
+    }, 15);
+  });
+}
+
+const bar = waitUntil(true)
 
 
 server.listen(port, () => {
