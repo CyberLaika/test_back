@@ -7,10 +7,10 @@ const port = 3000
 async function loadModel() {
   return await tf.loadLayersModel('file:///home/cyberserver/forge/multiplayer-game-starter-main/tfjsmodelv0/model.json')
 }
-const model = await loadModel()
+let model
+(async () => {let model = await loadModel()})()
 
 function predict(playerX, playerY, botX, botY) {
-  // pointsData -> List[float] как тебе такая типизация //заебись
   return model.predict(tf.tensor2d(pointsData, [1, 4])).dataSync();
 }
 
