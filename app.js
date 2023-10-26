@@ -7,11 +7,11 @@ const port = 3000
 async function loadModel() {
   return await tf.loadLayersModel('file:///home/cyberserver/forge/multiplayer-game-starter-main/tfjsmodelv0/model.json')
 }
-const modelSync = await loadModel()
+const model = await loadModel()
 
 function predict(playerX, playerY, botX, botY) {
   // pointsData -> List[float] как тебе такая типизация //заебись
-  return modelSync.predict(tf.tensor2d(pointsData, [1, 4])).dataSync();
+  return model.predict(tf.tensor2d(pointsData, [1, 4])).dataSync();
 }
 
 class Player {
@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 const sessions = {}
 
 
-io.on('connection', async (socket) => {
+io.on('connection', (socket) => {
   const player = new Player(500 * Math.random(), 500 * Math.random())
   const bot = new Player(500 * Math.random(), 500 * Math.random())
   sessions[socket.id] = new Session(player, bot, socket.id)
