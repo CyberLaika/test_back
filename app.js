@@ -4,11 +4,12 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+
 async function loadModel() {
   return await tf.loadLayersModel('file:///home/cyberserver/forge/multiplayer-game-starter-main/tfjsmodelv0/model.json')
 }
-let model
-(async () => {let model = await loadModel()})()
+let model = loadModel()
+export default await model;
 
 function predict(playerX, playerY, botX, botY) {
   return model.predict(tf.tensor2d(pointsData, [1, 4])).dataSync();
