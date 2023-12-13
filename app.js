@@ -14,15 +14,15 @@ const exec = promisify(loadModel);
 
 
 async function loadModel() {
-  return await tf.loadLayersModel('file:///home/cyberserver/forge/multiplayer-game-starter-main/tfjsmodelv0/model.json')
+  return await tf.loadLayersModel('file:///home/cyberserver/forge/multiplayer-game-starter-main/tfjsmodelv1/model.json')
 }
 
 let model = await exec();
 
 // let model = await loadModel();
 
-function predict(playerX, playerY, botX, botY) {
-  return model.predict(tf.tensor2d(pointsData, [1, 4])).dataSync();
+function predict(playerX, playerY, bot1X, bot1Y, bot2X, bot2Y) {
+  return model.predict(tf.tensor2d(pointsData, [1, 6])).dataSync();
 }
 
 class Player {
@@ -33,9 +33,10 @@ class Player {
 }
 
 class Session {
-  constructor(player, bot, session) {
+  constructor(player, bot1, bot2, session) {
     this.player = player
-    this.bot = bot
+    this.bot1 = bot1
+    this.bot2 = bot2
     this.session = session
     this.gameIsOver = false
   }
@@ -60,14 +61,17 @@ const sessions = {}
 
 io.on('connection', (socket) => {
   const player = new Player(500 * Math.random(), 500 * Math.random())
-  const bot = new Player(500 * Math.random(), 500 * Math.random())
-  sessions[socket.id] = new Session(player, bot, socket.id)
+  const bot1 = new Player(500 * Math.random(), 500 * Math.random())
+  const bot2 = new Player(500 * Math.random(), 500 * Math.random())
+  sessions[socket.id] = new Session(player, bot1, bot2, socket.id)
 
   const sessionInfo = {
     playerX: player.x,
     playerY: player.y,
-    botX: bot.x,
-    botY: bot.y,
+    bot1X: bot1.x,
+    bot1Y: bot1.y,
+    bot2X: bot2.x,
+    bot2Y: bot2.y,
   }
   io.to(socket.id).emit('sessionInfo', sessionInfo);
 
@@ -77,14 +81,13 @@ io.on('connection', (socket) => {
   })
 
   socket.on('updatePlayer', ({ x, y }) => {
-    let currentPlayer = sessions[socket.id]
     sessions[socket.id].player.x = x
     sessions[socket.id].player.y = y
   })
 })
 
 
-function predictMove(id, deltaX, deltaY){
+function predictMove(id, delta1X, delta1Y, delta2X, delta2Y){
  if (sessions[id].gameIsOver){
       return
     }
@@ -94,16 +97,34 @@ function predictMove(id, deltaX, deltaY){
       sessions[id].gameIsOver = true
       return
     }
-    sessions[id].bot.x += deltaX*Math.random()*60
-    sessions[id].bot.y += deltaY*Math.random()*60
-    io.to(id).emit('updateBot', ({x: sessions[id].bot.x, y: sessions[id].bot.y}));
+    sessions[id].bot1.x += delta1X*Math.random()*60
+    sessions[id].bot1.y += delta1Y*Math.random()*60
+    sessions[id].bot2.x += delta2X*Math.random()*60
+    sessions[id].bot2.y += delta2Y*Math.random()*60
+    io.to(id).emit('updateBot', (
+      {
+        x1: sessions[id].bot1.x,
+        y1: sessions[id].bot1.y,
+        x2: sessions[id].bot2.x,
+        y2: sessions[id].bot2.y
+      }
+      ));
 }
 
 
 setInterval(() => {
   for (const id in sessions){
-    let res = predict([sessions[id].player.x, sessions[id].player.y, sessions[id].bot.x, sessions[id].bot.y])
-    predictMove(id, res[0], res[1])
+    let res = predict(
+      [
+        sessions[id].player.x,
+        sessions[id].player.y,
+        sessions[id].bot1.x,
+        sessions[id].bot1.y,
+        sessions[id].bot2.x,
+        sessions[id].bot2.y
+      ]
+      )
+    predictMove(id, res[0], res[1], res[2], res[3])
     console.log(res)
   }
 }, 15)
