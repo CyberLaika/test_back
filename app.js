@@ -24,7 +24,7 @@ let model = await exec();
 
 // let model = await loadModel();
 
-function predict(playerX, playerY, bot1X, bot1Y, bot2X, bot2Y) {
+function predict(pointsData) {
   return model.predict(tf.tensor2d(pointsData, [1, 6])).dataSync();
 }
 
@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
 })
 
 
-function predictMove(id, delta1X, delta1Y, delta2X, delta2Y){
+function makeMove(id, delta1X, delta1Y, delta2X, delta2Y){
  if (sessions[id].gameIsOver){
       return
     }
@@ -127,7 +127,7 @@ setInterval(() => {
         sessions[id].bot2.y
       ]
       )
-    predictMove(id, res[0], res[1], res[2], res[3])
+    makeMove(id, res[0], res[1], res[2], res[3])
     console.log(res)
   }
 }, 15)
