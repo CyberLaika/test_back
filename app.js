@@ -4,6 +4,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+import * as util from "util";
 import { promisify } from "util";
 
 const log = console.log.bind(console);
