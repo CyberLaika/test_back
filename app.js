@@ -1,3 +1,6 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 const tf = require('@tensorflow/tfjs')
 require('@tensorflow/tfjs-node')
 const express = require('express')
